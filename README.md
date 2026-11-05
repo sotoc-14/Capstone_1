@@ -9,12 +9,14 @@ I used SQL to analyze sales data from January 2022 through December 2025 and Exc
 Tools Used
 
 MySQL Workbench
+
 Microsoft Excel
 
 
 Total Colorado Revenue: $6,412,632.22
 
 Highest-Performing Store: Store 705 ($917,471.53)
+
 Lowest-Performing Store: Store 715 ($279,268.94)
 
 # Sales Recommendation
