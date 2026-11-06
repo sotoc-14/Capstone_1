@@ -25,5 +25,7 @@ I recommend reviewing sales performance at Stores 715, 718, and 702, which gener
 I would also investigate the strategies used by Store 705 to determine whether they could help improve performance at other stores.
 
 Project Files
+
 soto_sales_analysis.sql 
+
 soto_territory_chart.xlsx
