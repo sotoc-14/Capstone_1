@@ -44,30 +44,14 @@ GROUP BY sales_year, sales_month
 ORDER BY sales_year, sales_month
 ;
 -- Question 2: Revenue by year and month
-SELECT sales_year, SUM(revenue)
-FROM (SELECT year (Transaction_Date) AS sales_year, Sale_Amount AS revenue 
-	FROM store_sales
-    WHERE Store_ID BETWEEN 701 AND 718
-    UNION ALL 
-		SELECT year(DATE), SalesTotal 
-        from online_sales) AS combined_sales
-GROUP BY sales_year
-ORDER BY sales_year
-;
--- Question 3: Colorado vs. West region
-SELECT group_label, SUM(revenue) AS total_revenue
-FROM (SELECT 'Colorado' AS group_label, Sale_Amount AS revenue
-	FROM store_sales
-		WHERE Store_ID BETWEEN 701 AND 718
-UNION ALL
-	SELECT 'Online' AS group_label, SalesTotal AS revenue
-		FROM online_sales
-) AS combined_sales
-GROUP BY group_label
-;
--- Colorado: 6,412,632.22
--- Online:   68,004,827.05
-
+SELECT
+    YEAR(Transaction_Date) AS sales_year,
+    MONTH(Transaction_Date) AS sales_month,
+    SUM(Sale_Amount) AS total_revenue
+FROM store_sales
+WHERE Store_ID BETWEEN 701 AND 718
+GROUP BY sales_year, sales_month
+ORDER BY sales_year, sales_month;
 
 -- Question 3
 SELECT group_label, SUM(revenue) AS total_revenue
@@ -91,6 +75,8 @@ FROM (
     FROM online_sales
 ) AS combined_sales
 GROUP BY group_label;
+-- Colorado: 6,412,632.22
+-- Online:   68,004,827.05
 
 -- Question 4: Transactions per month and average
 -- transaction amount by product category
@@ -110,16 +96,27 @@ WHERE ss.Store_ID BETWEEN 701 AND 718
 GROUP BY sales_year, sales_month, ic.Category
 ORDER BY sales_year, sales_month, ic.Category
 ;
+-- Question 4 Findings:
+-- Technology & Accessories had 505 sales
+-- records in October 2025, with an average
+-- sale amount of $508.91.
+-- This category is important to Colorado's
+-- revenue because of its high average sale amount.
 
 -- Question 5: Ranking Colorado stores by revenue
+
 SELECT
-    Store_ID,
-    SUM(Sale_Amount) AS total_revenue
-FROM store_sales
-WHERE Store_ID BETWEEN 701 AND 718
-GROUP BY Store_ID
-ORDER BY total_revenue DESC
-;
+    ss.Store_ID,
+    sl.StoreLocation AS City,
+    SUM(ss.Sale_Amount) AS total_revenue
+FROM store_sales ss
+JOIN store_locations sl
+    ON ss.Store_ID = sl.StoreId
+WHERE sl.State = 'Colorado'
+GROUP BY ss.Store_ID, sl.StoreLocation
+ORDER BY total_revenue DESC;
+
+
 
 -- Question 6: Recommendation for Next Quarter
 -- I recommend focusing sales attention on Stores
